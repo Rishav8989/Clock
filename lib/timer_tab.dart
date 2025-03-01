@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
+import 'package:audioplayers/audioplayers.dart'; // Import audioplayers
 
 class TimerTab extends StatefulWidget {
   const TimerTab({super.key});
@@ -18,11 +19,13 @@ class _TimerTabState extends State<TimerTab> {
   Timer? _timer;
   String _displayTime = '00:00:00';
   bool _timeIsSet = false;
+  final player = AudioPlayer(); // Create an instance of AudioPlayer
 
   @override
   void initState() {
     super.initState();
     _updateDisplayTime();
+    player.setReleaseMode(ReleaseMode.stop); // Stop audio when disposed
   }
 
   void _startTimer() {
@@ -40,7 +43,7 @@ class _TimerTabState extends State<TimerTab> {
           });
         }
       } else {
-        _stopTimer();
+        _stopTimerAndPlayRingtone(); // Call a new function to stop timer and play ringtone
       }
     });
   }
@@ -50,6 +53,11 @@ class _TimerTabState extends State<TimerTab> {
       _isRunning = false;
     });
     _timer?.cancel();
+  }
+
+  void _stopTimerAndPlayRingtone() {
+    _stopTimer();
+    _playRingtone(); // Play the ringtone when timer finishes
   }
 
   void _resetTimer() {
@@ -62,6 +70,7 @@ class _TimerTabState extends State<TimerTab> {
       _updateDisplayTime();
       _timeIsSet = false;
     });
+    player.stop(); // Stop ringtone when reset
   }
 
   void _updateDisplayTime() {
@@ -79,9 +88,15 @@ class _TimerTabState extends State<TimerTab> {
     _seconds = _totalSeconds % 60;
   }
 
+  Future<void> _playRingtone() async {
+    // Corrected AssetSource path to 'assets/alarm_clock.mp3'
+    await player.play(AssetSource('alarm_clock.mp3'));
+  }
+
   @override
   void dispose() {
     _timer?.cancel();
+    player.dispose(); // Dispose the player in dispose method
     super.dispose();
   }
 
