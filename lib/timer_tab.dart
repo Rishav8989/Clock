@@ -89,14 +89,17 @@ class _TimerTabState extends State<TimerTab> {
   }
 
   Future<void> _playRingtone() async {
-    // Corrected AssetSource path to 'assets/alarm_clock.mp3'
     await player.play(AssetSource('alarm_clock.mp3'));
+    // Stop the audio after 3 seconds
+    Future.delayed(const Duration(seconds: 3), () {
+      player.stop();
+    });
   }
 
   @override
   void dispose() {
     _timer?.cancel();
-    player.dispose(); // Dispose the player in dispose method
+    player.dispose();
     super.dispose();
   }
 

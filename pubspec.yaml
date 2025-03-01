@@ -10,6 +10,9 @@ dependencies:
   flutter:
     sdk: flutter
   audioplayers: ^6.2.0
+  timezone: ^0.10.0
+  intl: ^0.20.2
+  shared_preferences: ^2.5.2
   
 dev_dependencies:
   flutter_test:
