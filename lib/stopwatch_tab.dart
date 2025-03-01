@@ -63,14 +63,17 @@ class _StopwatchTabState extends State<StopwatchTab> {
     setState(() {
       _elapsedTime = '00:00:00.000';
       _laps.clear();
+      _stopwatch.stop();
       _isRunning = false;
     });
   }
 
   void _recordLap() {
-    setState(() {
-      _laps.insert(0, _formatElapsedTime(_stopwatch.elapsed));
-    });
+    if (_isRunning) {
+      setState(() {
+        _laps.insert(0, _formatElapsedTime(_stopwatch.elapsed));
+      });
+    }
   }
 
   @override
@@ -81,7 +84,6 @@ class _StopwatchTabState extends State<StopwatchTab> {
         children: [
           const Text(
             'Stopwatch',
-            style: TextStyle(fontSize: 24, color: Colors.white70),
           ),
           Text(
             _elapsedTime,
@@ -124,7 +126,6 @@ class _StopwatchTabState extends State<StopwatchTab> {
                 return ListTile(
                   title: Text(
                     'Lap ${(_laps.length - index)}: ${_laps[index]}',
-                    style: const TextStyle(color: Colors.white),
                   ),
                 );
               },

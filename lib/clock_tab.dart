@@ -46,14 +46,12 @@ class _ClockTabState extends State<ClockTab> {
         children: [
           const Text(
             'Current Time',
-            style: TextStyle(fontSize: 20, color: Colors.white70),
           ),
           Text(
             _timeString,
             style: const TextStyle(
               fontSize: 40,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
             ),
           ),
         ],

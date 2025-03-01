@@ -1,3 +1,4 @@
+// clock_home_page.dart (or wherever your ClockHomePage is)
 import 'package:flutter/material.dart';
 import 'clock_tab.dart';
 import 'timer_tab.dart';
@@ -31,14 +32,9 @@ class _ClockHomePageState extends State<ClockHomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: const Text('Clock App')),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+        title: const Text('Clock App'),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey.shade900,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.white70,
         currentIndex: _currentIndex,
         onTap: (index) {
           setState(() {

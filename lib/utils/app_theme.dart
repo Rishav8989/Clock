@@ -30,5 +30,20 @@ ThemeData appTheme() {
         borderSide: BorderSide(color: Colors.blue),
       ),
     ),
+    appBarTheme: const AppBarTheme(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold,
+      ),
+    ),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: Colors.grey.shade900,
+      selectedItemColor: Colors.blue,
+      unselectedItemColor: Colors.white70,
+    ),
   );
 }
