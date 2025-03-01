@@ -14,11 +14,11 @@ class ClockTab extends StatefulWidget {
 }
 
 class _ClockTabState extends State<ClockTab> {
-  Map<String, String> _timeStrings = {};
+  final Map<String, String> _timeStrings = {};
   Timer? _timer;
   List<String> _timeZones = ['Asia/Kolkata']; // Default to India time
-  List<String> _allTimezones = allTimezonesList;
-  List<String> _filteredTimezones = [];
+  final List<String> _allTimezones = allTimezonesList;
+  final List<String> _filteredTimezones = [];
   String? _selectedTimezone;
   final TextEditingController _searchController = TextEditingController();
 
