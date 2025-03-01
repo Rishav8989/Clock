@@ -45,15 +45,21 @@ class _ClockTabState extends State<ClockTab> {
     final prefs = await SharedPreferences.getInstance();
     final savedTimeZones = prefs.getStringList('timeZones');
     if (savedTimeZones != null && savedTimeZones.isNotEmpty) {
+      // Ensure uniqueness when loading from SharedPreferences
+      final uniqueTimeZones = savedTimeZones.toSet().toList();
       setState(() {
-        _timeZones = savedTimeZones;
+        _timeZones = uniqueTimeZones;
       });
+      print("Loaded timezones from prefs: $_timeZones"); // Log loaded timezones
+    } else {
+      print("No timezones loaded from prefs, using default: $_timeZones"); // Log default timezones
     }
   }
 
   Future<void> _saveTimeZones() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setStringList('timeZones', _timeZones);
+    print("Saved timezones: $_timeZones"); // Log saved timezones
   }
 
   void _getTimes() {
@@ -140,11 +146,19 @@ class _ClockTabState extends State<ClockTab> {
                   child: const Text('Add'),
                   onPressed: () {
                     if (_selectedTimezone != null) {
-                      setState(() {
-                        _timeZones.add(_selectedTimezone!);
-                      });
-                      _saveTimeZones();
-                      _getTimes();
+                      if (!_timeZones.contains(_selectedTimezone!)) {
+                        setState(() {
+                          _timeZones.add(_selectedTimezone!);
+                        });
+                        _saveTimeZones();
+                        _getTimes();
+                        print("Added timezone: $_selectedTimezone, current timezones: $_timeZones"); // Log added timezone
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text('Timezone already added')),
+                        );
+                        print("Timezone already exists: $_selectedTimezone, current timezones: $_timeZones"); // Log duplicate attempt
+                      }
                     }
                     Navigator.of(context).pop();
                   },
@@ -222,6 +236,7 @@ class _ClockTabState extends State<ClockTab> {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(content: Text('$cityName Timezone removed')),
                       );
+                      print("Removed timezone: $timeZoneName, current timezones: $_timeZones"); // Log removed timezone
                     },
                     background: Container(
                       color: Colors.red,
@@ -256,6 +271,7 @@ class _ClockTabState extends State<ClockTab> {
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(content: Text('$cityName Timezone removed')),
                             );
+                            print("Removed timezone via button: $timeZoneName, current timezones: $_timeZones"); // Log removed timezone
                           },
                         ),
                       ),
